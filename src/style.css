@@ -1,6 +1,9 @@
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #FDFDFB;
+  background-color: #FEFDFC;
+  max-width: 1040px;
+  min-width: 10vw;
+  margin: 2em auto;
 }
 
 #dropdownBtn {
@@ -12,15 +15,19 @@ body {
   background-color: #F2EEE9;
   border-radius: 4px;
   position: relative;
-  min-width: 30vw;
 }
 
 .dropdown-menu {
   background-color: #F2EEE9;
   position: absolute;
+  padding: 12px 18px;
+  box-sizing: border-box;
   margin-top: 8px;
   border-radius: 4px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   /* visibility: hidden;
   opacity: 0; */
 }
@@ -30,11 +37,10 @@ body {
 }
 
 .menu-item {
-  padding: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 }
 
 #searchInput {
@@ -53,26 +59,32 @@ body {
 }
 
 button {
-  border: 2px solid #000000;
-  background-color: #FDFDFB;
+  background-color: #222431;
+  color: #FDFDFC;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 600;
   border-radius: 99px;
-  padding: 12px 18px;
-}
-
-button:hover {
-  background-color: #EC714E;
-  color: #FDFDFC;
-}
-
-button:hover.primary-btn {
-  border: 2px solid #EC714E;
+  padding: 12px 22px;
+  border: none;
 }
 
 .secondary-btn {
-  border: none;
+  background-color: #FCF9F8;
+  color: #222431;
+  
 }
+
+button:hover {
+  background-color: #F1CABF;
+  color: #222431;
+}
+
+button:hover.primary-btn {
+
+}
+
+
 
 .button-group {
   display: flex;
@@ -85,4 +97,25 @@ button:hover.primary-btn {
 
 #arrowDown.rotated {
   transform: rotate(180deg); /* Rotate the arrow 180 degrees */
+}
+
+#selectedIdsContainer {
+  background-color: #F5F5F5;
+  border-radius: 4px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 18px;
+}
+
+#searchBar {
+  display: flex; 
+  /* flex-direction: row; 
+  justify-content: center;  */
+  gap: 16px; 
+  width: 100%;
+}
+
+#searchBar > div:first-child {
+  flex: 1;
+  width: 100%;
 }

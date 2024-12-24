@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/src/style.css">
   </head>
   <body>
-    <div style="display: flex; flex-direction: row; justify-content: center; gap: 16px;">
+    <div id="searchBar">
       <div style="position: relative">
         <div id="dropdownBtn">
             <input id="searchInput" type="text" placeholder="Search for events" autocomplete="off">
@@ -25,7 +25,9 @@
         <button id="clearBtn" class="secondary-btn">Clear selection</button>
       </div>
     </div>
-    <div id="selectedIdsContainer"></div>
+
+    <div id="selectedIdsContainer" class="hidden"></div>
+    
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
