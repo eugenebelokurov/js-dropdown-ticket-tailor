@@ -85,7 +85,7 @@ searchInput.addEventListener('input', (e) => {
   let hasMatches = false;
   
   menuItems.forEach(item => {
-    const label = item.querySelector('label');
+    const label = item.querySelector('title');
     const itemText = label.textContent.toLowerCase();
     
     if (itemText.includes(searchTerm)) {
@@ -161,7 +161,6 @@ function updateSelectedItems() {
       container.className = 'selected-item';
       container.textContent = item.title;
 
-      // Optional: Add a remove button
       const removeBtn = document.createElement('span');
       removeBtn.textContent = '×';
       removeBtn.style.marginLeft = '8px';
@@ -181,7 +180,7 @@ function updateSelectedItems() {
 }
 
 arrowDown.addEventListener('click', (e) => {
-  e.stopPropagation(); // Prevent event bubbling
+  e.stopPropagation();
   menu.classList.toggle('hidden');
   arrowDown.classList.toggle('rotated');
 });

@@ -1,13 +1,3 @@
-// export const menuItems = [
-//     { id: 'event1', title: 'Birthday Party' },
-//     { id: 'event2', title: 'Wedding' },
-//     { id: 'event3', title: 'Conference' },
-//     { id: 'event4', title: 'Marthon' },
-//     { id: 'event5', title: 'Christmas' },
-//     { id: 'event6', title: 'New Year' },
-//     { id: 'event7', title: 'Halloween' }
-//   ];
-
 export const menuItems = [
   { id: 'OwScAW3E', title: 'Hackathon: Building Apps for Social Good', status: 'past' },
   { id: 'QluqTgqU', title: 'Book Fair', status: 'past' },
