@@ -10,35 +10,54 @@ const arrowDown = document.getElementById('arrowDown');
 // Create menu items
 let selectedIds = [];
 
-menuItems.forEach(item => {
-  const div = document.createElement('div');
-  div.className = 'menu-item';
-  
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.id = `checkbox-${item.id}`;
-  
-  checkbox.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      selectedIds.push(item.id);
-      // addSelectedItem(item.title, item.id);
-    } else {
-      selectedIds = selectedIds.filter(id => id !== item.id);
-      // removeSelectedItem(item.id);
-    }
+// Sort and group items
+const groupedItems = {
+  upcoming: menuItems.filter(item => item.status === 'upcoming'),
+  past: menuItems.filter(item => item.status === 'past')
+};
 
-    updateSelectedItems();
-    console.log('Selected IDs:', selectedIds);
-  });
-  
-  const label = document.createElement('label');
-  label.htmlFor = `checkbox-${item.id}`;
-  label.textContent = item.title;
-  
-  div.appendChild(checkbox);
-  div.appendChild(label);
-  menu.appendChild(div);
+// Clear existing menu items
+menu.innerHTML = '';
+
+// Create and append grouped sections
+Object.entries(groupedItems).forEach(([status, items]) => {
+  if (items.length > 0) {
+    // Create section header
+    const sectionHeader = document.createElement('div');
+    sectionHeader.className = 'menu-section-header';
+    sectionHeader.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    menu.appendChild(sectionHeader);
+
+    // Create items for this section
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'menu-item';
+      
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = `checkbox-${item.id}`;
+      
+      checkbox.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          selectedIds.push(item.id);
+        } else {
+          selectedIds = selectedIds.filter(id => id !== item.id);
+        }
+        updateSelectedItems();
+      });
+      
+      const label = document.createElement('label');
+      label.htmlFor = `checkbox-${item.id}`;
+      label.textContent = item.title;
+      
+      div.appendChild(checkbox);
+      div.appendChild(label);
+      menu.appendChild(div);
+    });
+  }
 });
+
+//
 
 const noResults = document.createElement('div');
 noResults.textContent = 'No matches';
@@ -73,7 +92,7 @@ dropdownBtn.addEventListener('click', () => {
   arrowDown.classList.add('rotated');
 });
 
-submitBtn.addEventListener('click', () => {
+submitBtn.addEventListener('click', (e) => {
   console.log('Submit:', selectedIds);
   if (selectedIds.length > 0) {
     selectedIdsContainer.textContent = `Selected IDs: ${selectedIds.join(', ')}`;
@@ -82,10 +101,12 @@ submitBtn.addEventListener('click', () => {
     selectedIdsContainer.textContent = 'No IDs selected.';
     selectedIdsContainer.style.display = 'block';
   }
+
   menu.classList.add('hidden');
+  arrowDown.classList.remove('rotated');
 });
 
-clearBtn.addEventListener('click', () => {
+clearBtn.addEventListener('click', (e) => {
   selectedIds.forEach(id => {
     const checkbox = menu.querySelector(`#checkbox-${id}`);
     checkbox.checked = false;
@@ -107,14 +128,10 @@ clearBtn.addEventListener('click', () => {
 
 // Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
-  if ((!menu.contains(e.target) && !dropdownBtn.contains(e.target)) || arrowDown.contains(e.target)) {
+  if ((!menu.contains(e.target) && !dropdownBtn.contains(e.target))) {
     menu.classList.add('hidden');
     arrowDown.classList.remove('rotated');
   }
-});
-
-arrowDown.addEventListener('click', () => {
-  arrowDown.style.animation = 'rotate 0.5s';
 });
 
 // Update selected items in dropdownBtn
@@ -149,3 +166,9 @@ function updateSelectedItems() {
     }
   });
 }
+
+arrowDown.addEventListener('click', (e) => {
+  e.stopPropagation(); // Prevent event bubbling
+  menu.classList.toggle('hidden');
+  arrowDown.classList.toggle('rotated');
+});
