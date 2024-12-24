@@ -21,9 +21,13 @@ menuItems.forEach(item => {
   checkbox.addEventListener('change', (e) => {
     if (e.target.checked) {
       selectedIds.push(item.id);
+      // addSelectedItem(item.title, item.id);
     } else {
       selectedIds = selectedIds.filter(id => id !== item.id);
+      // removeSelectedItem(item.id);
     }
+
+    updateSelectedItems();
     console.log('Selected IDs:', selectedIds);
   });
   
@@ -87,14 +91,16 @@ clearBtn.addEventListener('click', () => {
     checkbox.checked = false;
   });
 
-   // Clear search input and reset menu items
-   searchInput.value = '';
-   const menuItems = menu.querySelectorAll('.menu-item');
-   menuItems.forEach(item => item.style.display = 'block');
-   noResults.style.display = 'none';
+  // Clear search input and reset menu items
+  searchInput.value = '';
+  const menuItems = menu.querySelectorAll('.menu-item');
+  menuItems.forEach(item => item.style.display = 'block');
+  noResults.style.display = 'none';
+
 
   console.log('Cleared:', selectedIds);
   selectedIds = [];
+  updateSelectedItems();
   menu.classList.add('hidden');
   selectedIdsContainer.style.display = 'none';
 });
@@ -110,3 +116,36 @@ document.addEventListener('click', (e) => {
 arrowDown.addEventListener('click', () => {
   arrowDown.style.animation = 'rotate 0.5s';
 });
+
+// Update selected items in dropdownBtn
+function updateSelectedItems() {
+  // Clear existing selected items
+  const existingItems = inputContainer.querySelectorAll('.selected-item');
+  existingItems.forEach(item => item.remove());
+
+  // Render selected items based on selectedIds
+  selectedIds.forEach(id => {
+    const item = menuItems.find(menuItem => menuItem.id === id);
+    if (item) {
+      const container = document.createElement('div');
+      container.className = 'selected-item';
+      container.textContent = item.title;
+
+      // Optional: Add a remove button
+      const removeBtn = document.createElement('span');
+      removeBtn.textContent = '×';
+      removeBtn.style.marginLeft = '8px';
+      removeBtn.style.cursor = 'pointer';
+      removeBtn.addEventListener('click', () => {
+        const checkbox = menu.querySelector(`#checkbox-${id}`);
+        if (checkbox) checkbox.checked = false;
+        selectedIds = selectedIds.filter(itemId => itemId !== id);
+        updateSelectedItems();
+        console.log('Selected IDs:', selectedIds);
+      });
+
+      container.appendChild(removeBtn);
+      inputContainer.insertBefore(container, searchInput);
+    }
+  });
+}

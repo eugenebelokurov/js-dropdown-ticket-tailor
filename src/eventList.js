@@ -3,5 +3,7 @@ export const menuItems = [
     { id: 'event2', title: 'Wedding' },
     { id: 'event3', title: 'Conference' },
     { id: 'event4', title: 'Marthon' },
-    { id: 'event5', title: 'Christmas' }
+    { id: 'event5', title: 'Christmas' },
+    { id: 'event6', title: 'New Year' },
+    { id: 'event7', title: 'Halloween' }
   ];
