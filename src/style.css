@@ -28,7 +28,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  /* gap: 12px; */
   /* visibility: hidden;
   opacity: 0; */
 }
@@ -40,8 +40,14 @@ body {
 .menu-item {
   cursor: pointer;
   display: flex;
+  padding: 12px 8px;
   align-items: center;
   gap: 16px;
+  border-radius: 4px;
+}
+
+.menu-item:hover {
+  background-color: #F5F5F5;
 }
 
 #searchInput {
