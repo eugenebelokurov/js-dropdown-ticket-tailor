@@ -37,23 +37,33 @@ Object.entries(groupedItems).forEach(([status, items]) => {
       checkbox.type = 'checkbox';
       checkbox.id = `checkbox-${item.id}`;
       
-      const label = document.createElement('label');
+      const label = document.createElement('title');
       label.htmlFor = `checkbox-${item.id}`;
+      label.style.display = 'block';
       label.textContent = item.title;
       
-      // Add click handler to div
-      div.addEventListener('click', (e) => {
-        // Prevent triggering twice when clicking checkbox
+      function handleSelection(e) {
+        e.stopPropagation();
+        
+        // Don't toggle if clicking directly on checkbox
         if (e.target !== checkbox) {
           checkbox.checked = !checkbox.checked;
-          if (checkbox.checked) {
-            selectedIds.push(item.id);
-          } else {
-            selectedIds = selectedIds.filter(id => id !== item.id);
-          }
-          updateSelectedItems();
         }
-      });
+        
+        // Update selectedIds without duplicates
+        if (checkbox.checked && !selectedIds.includes(item.id)) {
+          selectedIds.push(item.id);
+        } else {
+          selectedIds = selectedIds.filter(id => id !== item.id);
+        }
+        
+        updateSelectedItems();
+      }
+      
+      // Add click handlers to all elements
+      div.addEventListener('click', handleSelection);
+      label.addEventListener('click', handleSelection);
+      checkbox.addEventListener('click', handleSelection);
       
       div.appendChild(checkbox);
       div.appendChild(label);
