@@ -37,18 +37,23 @@ Object.entries(groupedItems).forEach(([status, items]) => {
       checkbox.type = 'checkbox';
       checkbox.id = `checkbox-${item.id}`;
       
-      checkbox.addEventListener('change', (e) => {
-        if (e.target.checked) {
-          selectedIds.push(item.id);
-        } else {
-          selectedIds = selectedIds.filter(id => id !== item.id);
-        }
-        updateSelectedItems();
-      });
-      
       const label = document.createElement('label');
       label.htmlFor = `checkbox-${item.id}`;
       label.textContent = item.title;
+      
+      // Add click handler to div
+      div.addEventListener('click', (e) => {
+        // Prevent triggering twice when clicking checkbox
+        if (e.target !== checkbox) {
+          checkbox.checked = !checkbox.checked;
+          if (checkbox.checked) {
+            selectedIds.push(item.id);
+          } else {
+            selectedIds = selectedIds.filter(id => id !== item.id);
+          }
+          updateSelectedItems();
+        }
+      });
       
       div.appendChild(checkbox);
       div.appendChild(label);
@@ -56,8 +61,6 @@ Object.entries(groupedItems).forEach(([status, items]) => {
     });
   }
 });
-
-//
 
 const noResults = document.createElement('div');
 noResults.textContent = 'No matches';
@@ -76,7 +79,7 @@ searchInput.addEventListener('input', (e) => {
     const itemText = label.textContent.toLowerCase();
     
     if (itemText.includes(searchTerm)) {
-      item.style.display = 'block';
+      item.style.display = 'flex';
       hasMatches = true;
     } else {
       item.style.display = 'none';
@@ -115,7 +118,7 @@ clearBtn.addEventListener('click', (e) => {
   // Clear search input and reset menu items
   searchInput.value = '';
   const menuItems = menu.querySelectorAll('.menu-item');
-  menuItems.forEach(item => item.style.display = 'block');
+  menuItems.forEach(item => item.style.display = 'flex');
   noResults.style.display = 'none';
 
 

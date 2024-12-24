@@ -45,7 +45,7 @@ body {
   display: flex;
   padding: 12px 8px;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   border-radius: 4px;
 }
 
@@ -60,6 +60,7 @@ body {
   outline: none;
   flex-grow: 1;
   background-color: #F2EEE9;
+  font-size: 16px;
 }
 
 #searchInput::placeholder {
@@ -131,7 +132,9 @@ button:hover {
 
 .selected-item {
   background-color: #ffffff;
+  color: #222431;
   font-size: 12px;
+  font-weight: 600;
   border-radius: 99px;
   padding: 4px 12px;
 }
