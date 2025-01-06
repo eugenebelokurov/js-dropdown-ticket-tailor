@@ -1,12 +1,4 @@
-
-async function fetchEvents() {
-  const originalData = await fetch("/src/events.json").then(res => res.json());
-  const menuItemsData = Object.values(originalData);
-
-  return menuItemsData;
-}
-
-const menuItemsData = await fetchEvents();
+import { menuItems } from './eventList.js';
 
 const dropdownBtn = document.getElementById('dropdownBtn');
 const searchInput = document.getElementById('searchInput');
@@ -20,8 +12,8 @@ let selectedIds = [];
 
 // Sort and group items
 const groupedItems = {
-  upcoming: menuItemsData.filter(item => item.status === 'upcoming'),
-  past: menuItemsData.filter(item => item.status === 'past')
+  upcoming: menuItems.filter(item => item.status === 'upcoming'),
+  past: menuItems.filter(item => item.status === 'past')
 };
 
 // Clear existing menu items
@@ -144,7 +136,7 @@ function updateSelectedItems() {
 
   // Render selected items based on selectedIds
   selectedIds.forEach(id => {
-    const item = menuItemsData.find(menuItem => menuItem.id === id);
+    const item = menuItems.find(menuItem => menuItem.id === id);
     console.log('Selected item:', item);
     if (item) {
       const container = document.createElement('div');
