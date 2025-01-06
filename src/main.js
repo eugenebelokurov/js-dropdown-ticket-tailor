@@ -1,4 +1,5 @@
-import { menuItems } from './eventList.js';
+const originalData = await fetch("/src/events.json").then(res => res.json());
+const menuItemsData = Object.values(originalData);
 
 const dropdownBtn = document.getElementById('dropdownBtn');
 const searchInput = document.getElementById('searchInput');
@@ -12,8 +13,8 @@ let selectedIds = [];
 
 // Sort and group items
 const groupedItems = {
-  upcoming: menuItems.filter(item => item.status === 'upcoming'),
-  past: menuItems.filter(item => item.status === 'past')
+  upcoming: menuItemsData.filter(item => item.status === 'upcoming'),
+  past: menuItemsData.filter(item => item.status === 'past')
 };
 
 // Clear existing menu items
@@ -22,55 +23,35 @@ menu.innerHTML = '';
 // Create and append grouped sections
 Object.entries(groupedItems).forEach(([status, items]) => {
   if (items.length > 0) {
-    // Create section header
-    const sectionHeader = document.createElement('div');
-    sectionHeader.className = 'menu-section-header';
-    sectionHeader.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-    menu.appendChild(sectionHeader);
+      // Create section header
+      const sectionHeader = document.createElement('div');
+      sectionHeader.className = 'menu-section-header';
+      sectionHeader.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+      menu.appendChild(sectionHeader);
 
-    // Create items for this section
-    items.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'menu-item';
-      
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = `checkbox-${item.id}`;
-      
-      const label = document.createElement('title');
-      label.htmlFor = `checkbox-${item.id}`;
-      label.style.display = 'block';
-      label.textContent = item.title;
-      
-      function handleSelection(e) {
-        e.stopPropagation();
-        
-        // Don't toggle if clicking directly on checkbox
-        if (e.target !== checkbox) {
-          checkbox.checked = !checkbox.checked;
-        }
-        
-        // Update selectedIds without duplicates
-        if (checkbox.checked && !selectedIds.includes(item.id)) {
-          selectedIds.push(item.id);
-        } else {
-          selectedIds = selectedIds.filter(id => id !== item.id);
-        }
-        
-        updateSelectedItems();
-      }
-      
-      // Add click handlers to all elements
-      div.addEventListener('click', handleSelection);
-      label.addEventListener('click', handleSelection);
-      checkbox.addEventListener('click', handleSelection);
-      
-      div.appendChild(checkbox);
-      div.appendChild(label);
-      menu.appendChild(div);
-    });
+      // Create menu items using web component
+      items.forEach(item => {
+          const menuItem = document.createElement('menu-item-component');
+          menuItem.id = "item-" + item.id;
+          menuItem.textContent = item.title;
+          
+          // Listen for custom event
+          menuItem.addEventListener('itemSelected', (e) => {
+              const { id, checked } = e.detail;
+              const cleanId = id.replace('item-', '');
+              if (checked && !selectedIds.includes(id)) {
+                  selectedIds.push(cleanId);
+              } else {
+                  selectedIds = selectedIds.filter(existingId => existingId !== cleanId);
+              }
+              updateSelectedItems();
+          });
+          
+          menu.appendChild(menuItem);
+      });
   }
 });
+
 
 const noResults = document.createElement('div');
 noResults.textContent = 'No matches';
@@ -81,12 +62,11 @@ menu.appendChild(noResults);
 // Search filter functionality
 searchInput.addEventListener('input', (e) => {
   const searchTerm = e.target.value.toLowerCase();
-  const menuItems = menu.querySelectorAll('.menu-item');
+  const menuItems = menu.querySelectorAll('menu-item-component');
   let hasMatches = false;
   
   menuItems.forEach(item => {
-    const label = item.querySelector('title');
-    const itemText = label.textContent.toLowerCase();
+    const itemText = item.textContent.toLowerCase();
     
     if (itemText.includes(searchTerm)) {
       item.style.display = 'flex';
@@ -121,13 +101,13 @@ submitBtn.addEventListener('click', (e) => {
 
 clearBtn.addEventListener('click', (e) => {
   selectedIds.forEach(id => {
-    const checkbox = menu.querySelector(`#checkbox-${id}`);
-    checkbox.checked = false;
+    const checkbox = menu.querySelector(`#item-${id}`);
+    checkbox.removeAttribute('checked');
   });
 
   // Clear search input and reset menu items
   searchInput.value = '';
-  const menuItems = menu.querySelectorAll('.menu-item');
+  const menuItems = menu.querySelectorAll('menu-item-component');
   menuItems.forEach(item => item.style.display = 'flex');
   noResults.style.display = 'none';
 
@@ -153,9 +133,12 @@ function updateSelectedItems() {
   const existingItems = inputContainer.querySelectorAll('.selected-item');
   existingItems.forEach(item => item.remove());
 
+  console.log('Selected IDs:', selectedIds);
+
   // Render selected items based on selectedIds
   selectedIds.forEach(id => {
-    const item = menuItems.find(menuItem => menuItem.id === id);
+    const item = menuItemsData.find(menuItem => menuItem.id === id);
+    console.log('Selected item:', item);
     if (item) {
       const container = document.createElement('div');
       container.className = 'selected-item';
@@ -166,8 +149,9 @@ function updateSelectedItems() {
       removeBtn.style.marginLeft = '8px';
       removeBtn.style.cursor = 'pointer';
       removeBtn.addEventListener('click', () => {
-        const checkbox = menu.querySelector(`#checkbox-${id}`);
-        if (checkbox) checkbox.checked = false;
+        const checkbox = menu.querySelector(`#item-${id}`);
+        console.log('Checkbox:', checkbox);
+        if (checkbox) checkbox.removeAttribute('checked');
         selectedIds = selectedIds.filter(itemId => itemId !== id);
         updateSelectedItems();
         console.log('Selected IDs:', selectedIds);
