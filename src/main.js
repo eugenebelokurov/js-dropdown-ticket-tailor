@@ -1,5 +1,12 @@
-const originalData = await fetch("/src/events.json").then(res => res.json());
-const menuItemsData = Object.values(originalData);
+
+async function fetchEvents() {
+  const originalData = await fetch("/src/events.json").then(res => res.json());
+  const menuItemsData = Object.values(originalData);
+
+  return menuItemsData;
+}
+
+const menuItemsData = await fetchEvents();
 
 const dropdownBtn = document.getElementById('dropdownBtn');
 const searchInput = document.getElementById('searchInput');
