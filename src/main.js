@@ -1,4 +1,4 @@
-const originalData = await fetch("/src/events.json").then(res => res.json());
+const originalData = fetch("/src/events.json").then(res => res.json());
 const menuItemsData = Object.values(originalData);
 
 const dropdownBtn = document.getElementById('dropdownBtn');
