@@ -6,14 +6,6 @@ class MenuItem extends HTMLElement {
 
     connectedCallback() {
       this.render();
-
-    //   this.shadowRoot.querySelector('input').addEventListener('change', (e) => {
-    //       if (e.target.checked) {
-    //           this.setAttribute('checked', '');
-    //       } else {
-    //           this.removeAttribute('checked');
-    //       }
-    //   });
         this.shadowRoot.querySelector('input').addEventListener('change', (e) => {
             if (e.target.checked) {
                 this.setAttribute('checked', '');
