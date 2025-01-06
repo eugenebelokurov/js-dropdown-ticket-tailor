@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Coustard:wght@400;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/src/style.css">
-    <script defer src="/src/menuItem.js"></script>
-    <script defer src="/src/button.js"></script>
+    <script defer type="module" src="/src/menuItem.js"></script>
+    <script defer type="module" src="/src/button.js"></script>
   </head>
   <body>
 
@@ -26,13 +26,9 @@
         </div>
         <div id="dropdownMenu" class="dropdown-menu hidden"></div>
         <div id="selectedIdsContainer" class="hidden" style="width: 100%; box-sizing: border-box;"></div>
-        
-        <!-- <dropdown-menu-component></dropdown-menu-component> -->
 
       </div>
       <div class="button-group">
-        <!-- <button id="submitBtn" class="primary-btn">Submit</button>
-        <button id="clearBtn" class="secondary-btn">Clear selection</button> -->
         <custom-button variant="primary" id="submitBtn">Submit</custom-button>
         <custom-button variant="secondary" id="clearBtn">Clear selection</custom-button>
       </div>
